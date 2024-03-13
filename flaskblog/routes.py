@@ -1,5 +1,7 @@
-
-from models import User, Post
+from flask import render_template, url_for, flash, redirect
+from flaskblog import app
+from flaskblog.forms import RegistrationForm, LoginForm
+from flaskblog.models import User, Post
 
 # app.app_context().push()
 
@@ -39,8 +41,3 @@ def registration():
 def login():
     form = LoginForm()
     return render_template('login.html', title='Login', form=form)
-
-if __name__ =='__main__':
-    with app.app_context():
-         db.create_all()
-         app.run(debug=True)
