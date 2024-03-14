@@ -1,9 +1,10 @@
 from flask import render_template, url_for, flash, redirect
-from flaskblog import app
+from flaskblog import app, db
 from flaskblog.forms import RegistrationForm, LoginForm
 from flaskblog.models import User, Post
 
-# app.app_context().push()
+app.app_context().push()
+db.create_all()
 
 posts = [
     {
