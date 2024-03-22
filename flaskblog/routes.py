@@ -34,11 +34,11 @@ def about():
 def registration():
     form = RegistrationForm()
     if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('urf-8')
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         user = User(username=form.username.data, email=form.email.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
-        flash('Your account been created! you are now able to log in', 'success')
+        flash('Your account has been created! you are now able to log in', 'success')
         return redirect(url_for('login'))
     return render_template('register.html',title='Register', form=form)
 
@@ -50,5 +50,5 @@ def login():
             flash('You have being logged in!', 'success')
             return redirect(url_for('home'))
         else:
-            flash('Login Unsuccessful. Please check username and password')
+            flash('Login Unsuccessful. Please check username and password', 'danger')
     return render_template('login.html', title='Login', form=form)
