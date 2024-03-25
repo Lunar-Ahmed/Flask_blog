@@ -2,6 +2,7 @@ from flask import render_template, url_for, flash, redirect
 from flaskblog import app, db, bcrypt
 from flaskblog.forms import RegistrationForm, LoginForm
 from flaskblog.models import User, Post
+from flask_login import login_user, current_user, logout_user, login_required
 
 app.app_context().push()
 db.create_all()
@@ -23,6 +24,7 @@ posts = [
 
 
 @app.route('/')
+@app.route("/home")
 def home():
     return render_template('home.html', posts=posts)
 
@@ -32,6 +34,8 @@ def about():
 
 @app.route('/registration', methods=['GET', 'POST'])
 def registration():
+    if current_user.is_authenticated:
+         return redirect(url_for('home'))
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
@@ -44,8 +48,21 @@ def registration():
 
 @app.route('/login',methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+         return redirect(url_for('home'))
     form = LoginForm()
     if form.validate_on_submit():
             user = user.query.filter_by(email=form.email.data).first()
             flash('Login Unsuccessful. Please check username and password', 'danger')
     return render_template('login.html', title='Login', form=form)
+
+@app.route("/logout")
+def logout():
+     logout_user()
+     return redirect(url_for('home'))
+
+@app.route("/account")
+@login_required
+def account():
+     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+     return render_template('account.html', tittle='Account', image_file=image_file)
