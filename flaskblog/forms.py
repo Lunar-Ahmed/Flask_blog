@@ -29,8 +29,8 @@ class LoginForm(FlaskForm):
     remember = BooleanField('Remember Me')
     submit = SubmitField('Sign Up')
 
-    class AccountupdateForm(FlaskForm):
-        username = StringField('Username',
+class UpdateAccountForm(FlaskForm):
+    username = StringField('Username',
                            validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email()])
     picture = FileField('Update profile picture', validators= [FileAllowed(['jpg', 'png'])])
