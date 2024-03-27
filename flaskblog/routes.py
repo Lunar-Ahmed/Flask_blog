@@ -1,7 +1,6 @@
-from flask import render_template, url_for, flash, redirect
+from flask import render_template, url_for, flash, redirect,  request
 from flaskblog import app, db, bcrypt
 from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm
-
 from flaskblog.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -72,8 +71,8 @@ def account():
           db.session.commit()
           flash('Your accout has been updated!', 'success')
           return redirect(url_for('account'))
-     elif request.method == 'GET':
-          form.username.data = current_user.username
-          form.email.data = current_user.email
+     elif request.method =='GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
      image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
      return render_template('account.html', tittle='Account', image_file=image_file, form=form)

@@ -16,7 +16,7 @@
                     {% endfor %}
                 </div>
                 {% else %}
-                {{ form.username(class="form-control form-control-lg") }} 
+                {{ form.username(class="form-control form-control-lg") }}
                 {% endif %}
 
             </div>
@@ -30,7 +30,7 @@
                     {% endfor %}
                 </div>
                 {% else %}
-                {{ form.email(class="form-control form-control-lg") }} 
+                {{ form.email(class="form-control form-control-lg") }}
                 {% endif %}
             </div>
             <div class="form-group">
@@ -43,7 +43,7 @@
                     {% endfor %}
                 </div>
                 {% else %}
-                {{ form.password(class="form-control form-control-lg") }} 
+                {{ form.password(class="form-control form-control-lg") }}
                 {% endif %}
             </div>
             <div class="form-group">
@@ -56,28 +56,29 @@
                     {% endfor %}
                 </div>
                 {% else %}
-                {{ form.confirm_password(class="form-control form-control-lg") }} 
+                {{ form.confirm_password(class="form-control form-control-lg") }}
                 {% endif %}
             </div>
             <div class="form-group">
                 {{ form.picture.label() }}
                 {{ form.picture(class=form-control-file) }}
                 {% if form.picture.errors %}
-                    {% for error in form.picture .errors %}
-                    <span class="text-danger">{{ error }}</span></div><br>
-                {% endif %}
-            </div>
-        </fieldset>
-        <div class="form-group">
-            {{ form.submit(class="btn btn-outline-info") }}
-        </div>
-    </form>
+                {% for error in form.picture.errors %}
+                <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div><br>
+            {% endif %}
+</div>
+</fieldset>
+<div class="form-group">
+    {{ form.submit(class="btn btn-outline-info") }}
+</div>
+</form>
 </div>
 
 <div class="border-top pt-3">
     <small class="text-muted">
-
         Already Have An Account! <a class="ml-2" href="{{ url_for('login')}}">Sign In</a>
     </small>
 </div>
-    {% endblock content %}
+{% endblock content %}
