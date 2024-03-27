@@ -1,6 +1,7 @@
 from flask import render_template, url_for, flash, redirect
 from flaskblog import app, db, bcrypt
-from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, request
+from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm
+
 from flaskblog.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -52,7 +53,7 @@ def login():
          return redirect(url_for('home'))
     form = LoginForm()
     if form.validate_on_submit():
-            user = user.query.filter_by(email=form.email.data).first()
+            user = User.query.filter_by(email=form.email.data).first()
             flash('Login Unsuccessful. Please check username and password', 'danger')
     return render_template('login.html', title='Login', form=form)
 
