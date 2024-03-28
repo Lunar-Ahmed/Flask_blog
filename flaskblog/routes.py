@@ -53,7 +53,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
             user = User.query.filter_by(email=form.email.data).first()
-            flash('Login Unsuccessful. Please check username and password', 'danger')
+            flash('Login Unsuccessful. Please check Email and password', 'danger')
     return render_template('login.html', title='Login', form=form)
 
 @app.route("/logout")
