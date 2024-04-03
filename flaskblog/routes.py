@@ -30,7 +30,7 @@ posts = [
 @app.route("/home")
 def home():
     posts = Post.query.all()
-    return render_template('home.html', posts=posts)
+    return render_template('register.html', posts=posts)
 
 @app.route('/about')
 def about():
