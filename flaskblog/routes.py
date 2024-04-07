@@ -2,9 +2,9 @@ import os
 import secrets
 from PIL import Image
 from flask import render_template, url_for, flash, redirect,  request, abort
-from flaskblog import app, db, bcrypt, mail,
+from flaskblog import app, db, bcrypt, mail
 from flaskblog.forms import (RegistrationForm, LoginForm, UpdateAccountForm, PostForm,
-                              RequestResetForm, ResetPasswordForm)
+                              RequestResetForm)
 from flaskblog.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
@@ -166,11 +166,11 @@ def send_reset_email(user):
     token = user.get.reset_token()
     msg = Message('Password Reset Request', sender='noreply@demo.com', reciptients= [user.email])
     msg.body = '''To reset your password, Visit the following link:
-{url_for('reset_token), token=token, _external=True}
+{url_for('reset_token', token=token, _external=True)}
 
 If you did not make this request then simply ignor this email and no changes will be made
 '''
-
+mail
 
 @app.route("/reset_password", methods=['GET', 'POST'])
 def reset_request():
@@ -182,7 +182,7 @@ def reset_request():
          send_reset_email(user)
          flash('An email has been sent with instructions to reset your password', 'info')
          return redirect(url_for('login'))
-     return render_template('reset_password.html', title='Reset Password', form=form)
+     return render_template('reset_request.html', title='Reset Password', form=form)
 
 @app.route("/reset_password/<token>", methods=['GET', 'POST'])
 def reset_token(token):
@@ -193,4 +193,10 @@ def reset_token(token):
          flash('That is an invalid or exired token', 'warningg')
          return redirect(url_for ('reset_request'))
      form = ResetPasswordForm()
+     if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user.password = hashed_password
+        db.session.commit()
+        flash('Your password has been updated! you are now able to log in', 'success')
+        return redirect(url_for('login'))
      return render_template('reset_token.html', title='Request password', form=form)
