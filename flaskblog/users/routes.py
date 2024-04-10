@@ -90,6 +90,3 @@ def reset_token(token):
         flash('Your password has been updated! you are now able to log in ', 'info')
         return redirect(url_for('users.login'))
     return render_template('reset_token.html', title='Reset Password', form=form)
-    
-
-    
