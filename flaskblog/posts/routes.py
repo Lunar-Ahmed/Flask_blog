@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask import render_template, url_for, flash, redirect, request, abort, Blueprint
 from flask_login import current_user, login_required
 from flaskblog import db
-from flaskblog.models import Post
+from flaskblog.models import Post, User
 from flaskblog.posts.forms import PostForm
 
 posts = Blueprint('posts', __name__)
@@ -17,7 +17,7 @@ def new_post():
         db.session.commit()
         flash('Your post has been created!', 'success')
         return redirect(url_for('main.home'))
-    return render_template('create_post.html',title='New post', form=form)
+    return render_template('post.html',title='New post', form=form)
 
 @posts.route("/post/<int:post_id>")
 def post(post_id):
@@ -54,3 +54,9 @@ def delete_post(post_id):
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('main.home'))
 
+@posts.route("/user/<string:username>")
+def user_posts(username):
+    page = request.args.get('page', 1, type=int)
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = posts.query.filter_by(author=user).order_by(post.date_poster.desc()).paginate(page=page, per_page=5)
+    return render_template('user_posts.html', posts=posts, user=user)
